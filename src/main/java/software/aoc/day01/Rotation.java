@@ -1,4 +1,4 @@
-package software.aoc.day01.a;
+package software.aoc.day01;
 
 public record Rotation(int step) {
     public static Rotation from(String order) {

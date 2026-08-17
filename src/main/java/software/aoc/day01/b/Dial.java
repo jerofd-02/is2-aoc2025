@@ -1,4 +1,4 @@
-package software.aoc.day01.a;
+package software.aoc.day01.b;
 
 import software.aoc.day01.Rotation;
 
@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 
 public class Dial {
     private final static int INITIAL_POSITION = 50;
-    private final static int DIAL_SIZE = 100;
+    private final static Cycle CYCLE = new Cycle(100);
 
     private final List<Rotation> rotations;
 
@@ -34,34 +34,29 @@ public class Dial {
     }
 
     public int position() {
-        return normalize(sumAll());
-    }
-
-    private int sumAll() {
-        return sum(rotations.stream());
+        return CYCLE.normalize(rawPosition(rotations.size()));
     }
 
     public int count() {
-        return (int) iterate()
-                .map(this::sumPartial)
-                .filter(s -> s == 0)
-                .count();
+        return iterate()
+                .map(this::zeroCrossingsAt)
+                .sum();
     }
 
     private IntStream iterate() {
         return IntStream.rangeClosed(1, rotations.size()).parallel();
     }
 
-    private int sumPartial(int size) {
-        return normalize(sum(rotations.stream().limit(size)));
+    private int zeroCrossingsAt(int index) {
+        return CYCLE.crossings(rawPosition(index - 1), rawPosition(index));
+    }
+
+    private int rawPosition(int size) {
+        return sum(rotations.stream().limit(size));
     }
 
     private static int sum(Stream<Rotation> orders) {
         return orders.mapToInt(Rotation::step).sum() + INITIAL_POSITION;
-    }
-
-    private int normalize(int value) {
-        return ((value < 0 ? DIAL_SIZE : 0) + value % DIAL_SIZE) % DIAL_SIZE;
     }
 
     public Dial execute(String orders) {
