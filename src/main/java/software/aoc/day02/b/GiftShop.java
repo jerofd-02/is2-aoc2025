@@ -1,18 +1,23 @@
 package software.aoc.day02.b;
 
+import software.aoc.day02.InvalidIdPattern;
+import software.aoc.day02.Range;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class GiftShop {
     private final List<Range> ranges;
+    private final InvalidIdPattern pattern;
 
-    public GiftShop() {
+    public GiftShop(InvalidIdPattern pattern) {
         this.ranges = new ArrayList<>();
+        this.pattern = pattern;
     }
 
     public static GiftShop create() {
-        return new GiftShop();
+        return new GiftShop(InvalidIdPattern.of("^(\\d+)\\1+$"));
     }
 
     public GiftShop add(String... ranges) {
@@ -25,7 +30,7 @@ public class GiftShop {
     }
 
     public long sumOfInvalidIds() {
-        return ranges.stream().flatMapToLong(Range::invalidIds).sum();
+        return ranges.stream().flatMapToLong(range -> range.invalidIds(pattern)).sum();
     }
 
     public GiftShop execute(String input) {
