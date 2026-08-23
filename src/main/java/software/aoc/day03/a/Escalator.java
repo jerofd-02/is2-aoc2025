@@ -9,8 +9,8 @@ public class Escalator {
     private final List<Bank> banks;
     private final JoltageCalculator joltage;
 
-    public Escalator(List<Bank> banks, JoltageCalculator joltage) {
-        this.banks = banks;
+    private Escalator(List<Bank> banks, JoltageCalculator joltage) {
+        this.banks = List.copyOf(banks);
         this.joltage = joltage;
     }
 
