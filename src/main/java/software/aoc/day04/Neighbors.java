@@ -8,7 +8,7 @@ public final class Neighbors implements Iterable<Position> {
 
     private final Position center;
 
-    public Neighbors(Position center) {
+    private Neighbors(Position center) {
         this.center = center;
     }
 

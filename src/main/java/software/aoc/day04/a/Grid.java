@@ -22,7 +22,6 @@ public record Grid(List<String> rows) {
         return contains(position) && charAt(position) == PAPER_ROLL;
     }
 
-
     private boolean contains(Position position) {
         return position.row() >= 0 && position.row() < rows.size() && position.col() >= 0 && position.col() < rows().get(position.row()).length();
     }

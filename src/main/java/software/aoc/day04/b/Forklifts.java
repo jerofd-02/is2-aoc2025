@@ -7,7 +7,7 @@ import java.util.List;
 public final class Forklifts {
     private static final Forklifts INSTANCE = new Forklifts();
 
-    public Forklifts() {
+    private Forklifts() {
     }
 
     public static Forklifts getInstance() {
