@@ -1,0 +1,24 @@
+package software.aoc.day05.a;
+
+import java.util.List;
+
+public record Inventory(FreshRanges freshRanges, List<Long> availableIds) {
+    public Inventory {
+        availableIds = List.copyOf(availableIds);
+    }
+
+    public static Inventory from(String input) {
+        String[] sections = input.trim().split("\\n\\s*\\n", 2);
+        FreshRanges freshRanges = FreshRanges.from(sections[0]);
+        List<Long> availableIds = parseIds(sections[1]);
+        return new Inventory(freshRanges, availableIds);
+    }
+
+    private static List<Long> parseIds(String block) {
+        return block.lines().map(String::trim).filter(line -> !line.isEmpty()).map(Long::parseLong).toList();
+    }
+
+    public long freshIngredientsCount() {
+        return availableIds.stream().filter(freshRanges::isFresh).count();
+    }
+}
