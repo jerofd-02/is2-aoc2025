@@ -1,5 +1,7 @@
 package software.aoc.day05.a;
 
+import software.aoc.day05.FreshnessRule;
+
 import java.util.List;
 
 public record FreshRanges(List<FreshnessRule> ranges) implements FreshnessRule {

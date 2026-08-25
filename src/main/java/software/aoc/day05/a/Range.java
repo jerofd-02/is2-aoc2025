@@ -1,5 +1,7 @@
 package software.aoc.day05.a;
 
+import software.aoc.day05.FreshnessRule;
+
 public record Range(long first, long last) implements FreshnessRule {
     public static Range parse(String line) {
         String[] bounds = line.trim().split("-");
