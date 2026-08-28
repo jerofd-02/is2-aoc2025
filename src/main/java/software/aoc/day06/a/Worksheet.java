@@ -1,5 +1,9 @@
 package software.aoc.day06.a;
 
+import software.aoc.day06.Equation;
+import software.aoc.day06.EquationBuilder;
+import software.aoc.day06.Operator;
+
 import java.util.ArrayList;
 import java.util.List;
 

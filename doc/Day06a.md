@@ -1,4 +1,4 @@
-# Day 06a — Worksheet
+# Día 6a: Trash Compactor ---
 El input es una hoja de matemáticas donde varios problemas están dispuestos en columnas, uno junto a otro. Cada columna tiene sus números apilados verticalmente y, debajo, el operador (`+` o `*`) que hay que aplicarles en orden. Las columnas se separan por espacios en blanco (la alineación exacta no importa).
 
 ## Modelo conceptual en UML
@@ -7,23 +7,23 @@ El input es una hoja de matemáticas donde varios problemas están dispuestos en
 </div>
 
 ## Patrones de diseño
-### **Builder** - [`EquationBuilder`](../src/main/java/software/aoc/day06/a/EquationBuilder.java) 
-Acumula números por columna antes de crear la [`Equation`](../src/main/java/software/aoc/day06/a/Equation.java) inmutable.
+### Builder - [`EquationBuilder`](../src/main/java/software/aoc/day06/EquationBuilder.java) 
+Acumula números por columna antes de crear la [`Equation`](../src/main/java/software/aoc/day06/Equation.java) inmutable.
 
-### **Strategy** - `Operator`
+### Strategy - `Operator`
 Encapsula cada operación (+/*) intercambiable sin condicionales.
 
-### **Factory Method** - `Operator.fromSymbol`, `Worksheet.from`
+### Factory Method - `Operator.fromSymbol`, `Worksheet.from`
 Crea objetos desde texto, encapsulando la lógica de parseo.
 
-### **Value Object** - `Equation`, `Worksheet`
+### Value Object - `Equation`, `Worksheet`
 Datos inmutables con comportamiento propio.
 
 ## Clean Code
 - **Nombres de dominio**: [`Worksheet`](../src/main/java/software/aoc/day06/a/Worksheet.java), `Equation`, `grandTotal` → código autodescriptivo.
 - **Inmutabilidad**: records con `List.copyOf`, enum con campos `final`.
 - **Funciones pequeñas, un nivel de abstracción**: `Worksheet.from` delega en `parseRows` + `buildEquations`.
-- **DRY**: [`Operator`](../src/main/java/software/aoc/day06/a/Operator.java) usa `LongBinaryOperator` en vez de duplicar clases anónimas por cada operador.
+- **DRY**: [`Operator`](../src/main/java/software/aoc/day06/Operator.java) usa `LongBinaryOperator` en vez de duplicar clases anónimas por cada operador.
 - **Streams declarativos**: `solve()` y `grandTotal()` expresan intención, no bucles.
 - **Constante con nombre**: `WHITESPACE` en vez de regex mágico.
 - **Fail-fast**: `fromSymbol` lanza excepción con mensaje claro si el operador no existe.
