@@ -1,4 +1,4 @@
-package software.aoc.day08.a;
+package software.aoc.day08;
 
 import java.util.HashMap;
 import java.util.List;

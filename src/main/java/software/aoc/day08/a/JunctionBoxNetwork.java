@@ -1,5 +1,9 @@
 package software.aoc.day08.a;
 
+import software.aoc.day08.DisjointSet;
+import software.aoc.day08.JunctionBox;
+import software.aoc.day08.PairDistance;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,4 +1,4 @@
-package software.aoc.day08.a;
+package software.aoc.day08;
 
 public record PairDistance(int first, int second, long distanceSquared) implements Comparable<PairDistance> {
     @Override
