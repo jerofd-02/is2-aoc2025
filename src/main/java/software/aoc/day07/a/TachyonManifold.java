@@ -1,5 +1,7 @@
 package software.aoc.day07.a;
 
+import software.aoc.day07.Grid;
+
 import java.util.stream.IntStream;
 
 public record TachyonManifold(Grid grid) {
