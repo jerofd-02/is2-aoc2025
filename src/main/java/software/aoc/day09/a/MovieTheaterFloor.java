@@ -1,5 +1,7 @@
 package software.aoc.day09.a;
 
+import software.aoc.day09.RedTile;
+
 import java.util.ArrayList;
 import java.util.List;
 

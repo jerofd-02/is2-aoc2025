@@ -1,5 +1,7 @@
 package software.aoc.day09.a;
 
+import software.aoc.day09.RedTile;
+
 public record Rectangle(RedTile first, RedTile second) {
     public static Rectangle between(RedTile first, RedTile second) {
         return new Rectangle(first, second);

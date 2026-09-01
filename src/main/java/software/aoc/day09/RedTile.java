@@ -1,4 +1,4 @@
-package software.aoc.day09.a;
+package software.aoc.day09;
 
 public record RedTile(long x, long y) {
     public static RedTile from(String line) {
