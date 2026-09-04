@@ -1,5 +1,7 @@
 package software.aoc.day11.a;
 
+import software.aoc.day11.CircuitDiagram;
+
 import java.util.HashMap;
 import java.util.Map;
 
