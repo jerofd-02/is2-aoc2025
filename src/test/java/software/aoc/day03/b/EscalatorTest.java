@@ -17,7 +17,7 @@ public class EscalatorTest {
 
     @Test
     public void given_a_bank_should_find_max_joltage() {
-        Escalator escalator = Escalator.create(JoltageCalculator.selecting(2));
+        Escalator escalator = Escalator.create(DigitSelectionJoltageCalculator.selecting(2));
 
         assertThat(escalator.add("987654321111111").totalOutputJoltage()).isEqualTo(98);
         assertThat(escalator.add("811111111111119").totalOutputJoltage()).isEqualTo(89);
@@ -27,14 +27,14 @@ public class EscalatorTest {
 
     @Test
     public void sum_total_output_joltage_with_two_batteries() {
-        Escalator escalator = Escalator.create(JoltageCalculator.selecting(2));
+        Escalator escalator = Escalator.create(DigitSelectionJoltageCalculator.selecting(2));
 
         assertThat(escalator.execute(banks).totalOutputJoltage()).isEqualTo(357);
     }
 
     @Test
     public void given_a_bank_should_find_max_joltage_with_twelve_batteries() {
-        Escalator escalator = Escalator.create(JoltageCalculator.selecting(12));
+        Escalator escalator = Escalator.create(DigitSelectionJoltageCalculator.selecting(12));
 
         assertThat(escalator.add("987654321111111").totalOutputJoltage()).isEqualTo(987654321111L);
         assertThat(escalator.add("811111111111119").totalOutputJoltage()).isEqualTo(811111111119L);
@@ -42,7 +42,7 @@ public class EscalatorTest {
 
     @Test
     public void sum_total_output_joltage_with_twelve_batteries() {
-        Escalator escalator = Escalator.create(JoltageCalculator.selecting(12)).execute(banks);
+        Escalator escalator = Escalator.create(DigitSelectionJoltageCalculator.selecting(12)).execute(banks);
 
         assertThat(escalator.totalOutputJoltage()).isEqualTo(3121910778619L);
     }

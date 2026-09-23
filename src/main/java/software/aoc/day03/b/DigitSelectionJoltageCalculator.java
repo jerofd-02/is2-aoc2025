@@ -1,19 +1,22 @@
 package software.aoc.day03.b;
 
+import software.aoc.day03.JoltageCalculator;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-public class JoltageCalculator {
+public class DigitSelectionJoltageCalculator implements JoltageCalculator {
     private final int digitsToSelect;
 
-    public JoltageCalculator(int digitsToSelect) {
+    public DigitSelectionJoltageCalculator(int digitsToSelect) {
         this.digitsToSelect = digitsToSelect;
     }
 
-    public static JoltageCalculator selecting(int digitsToSelect) {
-        return new JoltageCalculator(digitsToSelect);
+    public static DigitSelectionJoltageCalculator selecting(int digitsToSelect) {
+        return new DigitSelectionJoltageCalculator(digitsToSelect);
     }
 
+    @Override
     public long compute(String digits) {
         return Long.parseLong(selectMaxDigits(digits));
     }

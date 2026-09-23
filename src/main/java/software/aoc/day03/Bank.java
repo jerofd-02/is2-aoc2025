@@ -1,4 +1,4 @@
-package software.aoc.day03.b;
+package software.aoc.day03;
 
 public record Bank(String digits) {
     public static Bank from(String line) {

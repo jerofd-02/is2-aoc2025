@@ -1,5 +1,7 @@
 package software.aoc.day03.a;
 
+import software.aoc.day03.Bank;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -7,18 +9,18 @@ import java.util.stream.Stream;
 
 public class Escalator {
     private final List<Bank> banks;
-    private final JoltageCalculator joltage;
+    private final PairwiseMaxJoltageCalculator joltage;
 
-    private Escalator(List<Bank> banks, JoltageCalculator joltage) {
+    private Escalator(List<Bank> banks, PairwiseMaxJoltageCalculator joltage) {
         this.banks = List.copyOf(banks);
         this.joltage = joltage;
     }
 
     public static Escalator create() {
-        return new Escalator(List.of(), new JoltageCalculator());
+        return new Escalator(List.of(), new PairwiseMaxJoltageCalculator());
     }
 
-    public static Escalator create(JoltageCalculator joltage) {
+    public static Escalator create(PairwiseMaxJoltageCalculator joltage) {
         return new Escalator(List.of(), joltage);
     }
 

@@ -1,6 +1,9 @@
 package software.aoc.day03.a;
 
-public class JoltageCalculator {
+import software.aoc.day03.JoltageCalculator;
+
+public class PairwiseMaxJoltageCalculator implements JoltageCalculator {
+    @Override
     public long compute(String digits) {
         int[] maxDigitAfter = maxDigitAfterEachPosition(digits);
         return bestTwoDigitValue(digits, maxDigitAfter);
