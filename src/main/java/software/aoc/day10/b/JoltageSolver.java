@@ -12,6 +12,9 @@ public class JoltageSolver {
         this.machine = machine;
     }
 
+    private record SearchContext(List<Integer> freeColumns, ReducedSystem system, long upperBound) {
+    }
+
     public long solveMinimumPresses() {
         ReducedSystem system = reduceToRref();
 
@@ -21,8 +24,8 @@ public class JoltageSolver {
 
         List<Integer> freeColumns = freeColumns(system);
         int[] freeValues = new int[freeColumns.size()];
-        long upperBound = upperBoundOnPresses();
-        long best = searchFreeVariables(0, freeColumns, freeValues, system, upperBound);
+        SearchContext context = new SearchContext(freeColumns, system, upperBoundOnPresses());
+        long best = searchFreeVariables(0, freeValues, context, context.upperBound());
 
         if (best == Long.MAX_VALUE) {
             throw new IllegalStateException("No valid integer combination found for machine: " + machine);
@@ -90,9 +93,7 @@ public class JoltageSolver {
             if (row == pivotRow) continue;
             double factor = matrix[row][col];
             if (Math.abs(factor) < EPSILON) continue;
-            for (int c = col; c <= numCols; c++) {
-                matrix[row][c] -= factor * matrix[pivotRow][c];
-            }
+            for (int c = col; c <= numCols; c++) matrix[row][c] -= factor * matrix[pivotRow][c];
         }
     }
 
@@ -113,9 +114,9 @@ public class JoltageSolver {
         return machine.requirement().targets().stream().mapToLong(Integer::longValue).sum();
     }
 
-    private long searchFreeVariables(int freeIndex, List<Integer> freeColumns, int[] freeValues, ReducedSystem system, long bestSoFar) {
-        if (freeIndex == freeColumns.size()) {
-            long total = evaluateSolution(freeColumns, freeValues, system);
+    private long searchFreeVariables(int freeIndex, int[] freeValues, SearchContext context, long bestSoFar) {
+        if (freeIndex == context.freeColumns().size()) {
+            long total = evaluateSolution(freeValues, context);
             return Math.min(bestSoFar, total);
         }
 
@@ -123,9 +124,9 @@ public class JoltageSolver {
         if (partialSum >= bestSoFar) return bestSoFar;
 
         long best = bestSoFar;
-        for (int value = 0; value <= upperBoundOnPresses(); value++) {
+        for (int value = 0; value <= context.upperBound(); value++) {
             freeValues[freeIndex] = value;
-            best = searchFreeVariables(freeIndex + 1, freeColumns, freeValues, system, best);
+            best = searchFreeVariables(freeIndex + 1, freeValues, context, best);
         }
         return best;
     }
@@ -136,17 +137,16 @@ public class JoltageSolver {
         return sum;
     }
 
-    private long evaluateSolution(List<Integer> freeColumns, int[] freeValues, ReducedSystem system) {
+    private long evaluateSolution(int[] freeValues, SearchContext context) {
+        ReducedSystem system = context.system();
         double[] x = new double[system.numCols()];
-        for (int i = 0; i < freeColumns.size(); i++) x[freeColumns.get(i)] = freeValues[i];
+        for (int i = 0; i < context.freeColumns().size(); i++) x[context.freeColumns().get(i)] = freeValues[i];
 
         for (int row = 0; row < system.numRows(); row++) {
             int pivotCol = system.pivotColumns()[row];
             if (pivotCol == -1) continue;
             double value = system.matrix()[row][system.numCols()];
-            for (int freeCol : freeColumns) {
-                value -= system.matrix()[row][freeCol] * x[freeCol];
-            }
+            for (int freeCol : context.freeColumns()) value -= system.matrix()[row][freeCol] * x[freeCol];
             x[pivotCol] = value;
         }
 

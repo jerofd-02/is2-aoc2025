@@ -1,11 +1,13 @@
 package software.aoc.day10.a;
 
+import software.aoc.day10.PressCounter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public record Machine(LightState target, List<Button> buttons) {
+public record Machine(LightState target, List<Button> buttons) implements PressCounter {
     private static final Pattern LIGHTS_PATTERN = Pattern.compile("\\[([.#]+)]");
     private static final Pattern BUTTON_PATTERN = Pattern.compile("\\(([0-9,]+)\\)");
 
@@ -38,6 +40,7 @@ public record Machine(LightState target, List<Button> buttons) {
         return buttons;
     }
 
+    @Override
     public long minPresses() {
         return new ButtonPressSearch(this).shortestPressCount();
     }

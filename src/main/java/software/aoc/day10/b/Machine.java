@@ -1,11 +1,13 @@
 package software.aoc.day10.b;
 
+import software.aoc.day10.PressCounter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public record Machine(JoltageRequirement requirement, List<Button> buttons) {
+public record Machine(JoltageRequirement requirement, List<Button> buttons) implements PressCounter {
     private static final Pattern BUTTON_PATTERN = Pattern.compile("\\(([0-9,]+)\\)");
     private static final Pattern JOLTAGE_PATTERN = Pattern.compile("\\{([0-9,]+)}");
 
@@ -30,6 +32,7 @@ public record Machine(JoltageRequirement requirement, List<Button> buttons) {
         return buttons;
     }
 
+    @Override
     public long minPresses() {
         return new JoltageSolver(this).solveMinimumPresses();
     }

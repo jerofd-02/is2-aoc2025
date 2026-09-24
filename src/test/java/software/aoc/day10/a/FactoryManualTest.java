@@ -1,6 +1,8 @@
 package software.aoc.day10.a;
 
 import org.junit.Test;
+import software.aoc.day10.FactoryManual;
+import software.aoc.day10.PressCounter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,7 +18,7 @@ public class FactoryManualTest {
 
     @Test
     public void solves_each_machine_individually() {
-        FactoryManual manual = FactoryManual.from(input);
+        FactoryManual<Machine> manual = FactoryManual.from(input, Machine::from);
 
         assertThat(manual.machines().get(0).minPresses()).isEqualTo(2);
         assertThat(manual.machines().get(1).minPresses()).isEqualTo(3);
@@ -25,7 +27,7 @@ public class FactoryManualTest {
 
     @Test
     public void sums_the_fewest_button_presses_across_all_machines() {
-        FactoryManual manual = FactoryManual.from(input);
+        FactoryManual<PressCounter> manual = FactoryManual.from(input, Machine::from);
 
         assertThat(manual.totalMinPresses()).isEqualTo(7);
     }
@@ -33,7 +35,7 @@ public class FactoryManualTest {
     @Test
     public void answer() throws IOException {
         try (InputStream inputStream = FactoryManual.class.getResourceAsStream("/day10/input.txt")) {
-            FactoryManual manual = FactoryManual.from(new String(inputStream != null ? inputStream.readAllBytes() : null));
+            FactoryManual<PressCounter> manual = FactoryManual.from(new String(inputStream != null ? inputStream.readAllBytes() : null), Machine::from);
             assertThat(manual.totalMinPresses()).isEqualTo(444);
         }
     }
