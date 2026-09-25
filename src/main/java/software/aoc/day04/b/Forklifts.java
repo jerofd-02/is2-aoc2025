@@ -5,15 +5,6 @@ import software.aoc.day04.Position;
 import java.util.List;
 
 public final class Forklifts {
-    private static final Forklifts INSTANCE = new Forklifts();
-
-    private Forklifts() {
-    }
-
-    public static Forklifts getInstance() {
-        return INSTANCE;
-    }
-
     public long totalRemovableRolls(Grid grid) {
         long total = 0;
 

@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GiftShop {
+    private static final String REPEATED_BLOCK = "^(\\d+)\\1+$";
     private final List<Range> ranges;
     private final InvalidIdPattern pattern;
 
@@ -17,7 +18,7 @@ public class GiftShop {
     }
 
     public static GiftShop create() {
-        return new GiftShop(InvalidIdPattern.of("^(\\d+)\\1+$"));
+        return new GiftShop(InvalidIdPattern.of(REPEATED_BLOCK));
     }
 
     public GiftShop add(String... ranges) {
