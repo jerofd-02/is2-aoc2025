@@ -1,8 +1,8 @@
 # Día 5b - Cafeteria
 Segunda parte del ejercicio "Cafeteria": ya no importa qué IDs están disponibles — hay que contar cuántos IDs distintos cubren en total los rangos de frescura, fusionando los que se solapan para no contar el mismo ID dos veces.
 
-## Modelo conceptual en UML
-<div style="text-align: center;">
+## Modelado conceptual en UML
+<div align="center">
   <img src="../images/Day05b.png"/>
 </div>
 
@@ -15,6 +15,12 @@ public interface FreshnessComponent extends FreshnessRule {
 ```
 
 `FreshnessRule` (la interfaz compartida de la parte A, en `software.aoc.day05`) no se toca ni se modifica — sigue teniendo un único método. [`FreshnessComponent`](../src/main/java/software/aoc/day05/b/FreshnessComponent.java) la extiende solo dentro de este paquete, así que la parte A no se entera de que esta capacidad existe.
+
+**`Inventory.from(...)` también gana una guarda que la parte A no tiene.** El input de esta parte puede llegar con solo la sección de rangos, sin ninguna lista de IDs disponibles detrás — algo que no ocurría en la parte A. `Inventory.from(...)` lo contempla explícitamente:
+```java
+List<Long> availableIds = sections.length > 1 ? parseIds(sections[1]) : List.of();
+```
+frente al acceso directo `parseIds(sections[1])` de la parte A, que lanzaría `ArrayIndexOutOfBoundsException` si el input no trajera segunda sección. Es un cambio pequeño pero real: sin él, el test `count_total_fresh_ids_merging_overlapping_ranges` (que usa un input de solo rangos) no podría construir el `Inventory`.
 
 ## Patrones y técnicas nuevas en esta parte
 ### Visitor — `RangeVisitor` / `TotalFreshIdsVisitor`
@@ -44,4 +50,7 @@ Esta separación también evita contaminar el Composite con responsabilidades qu
 - **[`Inventory`](../src/main/java/software/aoc/day05/b/Inventory.java) no necesita saber cómo se calcula el total**: solo construye el visitor, se lo pasa a `freshRanges.accept(...)` y le pregunta el resultado — la orquestación no conoce el algoritmo, solo el protocolo (`accept` / `total`).
 
 ## Tests
-Se añaden `count_total_fresh_ids_merging_overlapping_ranges` (con elejemplo del enunciado, `14`) y `answer` (con el input real) a [`InventoryTest`](../src/test/java/software/aoc/day05/b/InventoryTest.java), junto a los casos ya existentes de `freshIngredientsCount()` de la parte A, que no cambian de comportamiento.
+[`InventoryTest`](../src/test/java/software/aoc/day05/b/InventoryTest.java) mantiene, sin cambios de comportamiento, los casos ya existentes de la parte A (`an_id_outside_every_range_is_spoiled`, `an_inside_a_single_range_is_fresh`, `an_id_inside_overlapping_ranges_is_still_fresh`, `count_all_fresh_available_ingredients`), y además:
+
+1. **Añade** `count_total_fresh_ids_merging_overlapping_ranges`, con un input de solo rangos (`14`), que ejercita tanto el Visitor como la nueva guarda de `Inventory.from(...)`.
+2. **Modifica** `answer`: en la parte A comprobaba `freshIngredientsCount()` contra el input real (`770L`); aquí pasa a comprobar `totalFreshIngredientsIds()` contra ese mismo input (`357674099117260L`) — no es un test nuevo, es el mismo nombre reutilizado para verificar la pregunta nueva de esta parte.

@@ -1,16 +1,16 @@
 # Día 4a - Printing Department
+
+## Descripción
 Solución al ejercicio "Printing Department": dado un diagrama en forma de cuadrícula con rollos de papel (`@`), contar cuántos son accesibles para una carretilla — un rollo es accesible si tiene **menos de cuatro** rollos de papel entre sus ocho posiciones adyacentes.
 
-## Modelo conceptual en UML
-<div style="text-align: center;">
+[`Position`](../src/main/java/software/aoc/day04/Position.java) representa una coordenada inmutable (fila, columna) y [`Neighbors`](../src/main/java/software/aoc/day04/Neighbors.java) representa el recorrido de las 8 posiciones adyacentes. Ambos viven en el paquete raíz `software.aoc.day04` porque son conceptos de dominio genéricos (una coordenada, un recorrido de vecindad) que no dependen de ninguna parte concreta del ejercicio. [`Grid`](../src/main/java/software/aoc/day04/a/Grid.java), en cambio, vive en `day04.a` — aunque, como se explica en la doc de la parte B, la mayor parte de su lógica no es en realidad específica de esta parte, sino idéntica a la copia que existe en `day04.b`.
+
+## Modelado conceptual en UML
+<div align="center">
   <img src="../images/Day04a.png"/>
 </div>
 
-## Estructura
-[`Position`](../src/main/java/software/aoc/day04/Position.java) representa una coordenada inmutable (fila, columna) y [`Neighbors`](../src/main/java/software/aoc/day04/Neighbors.java) representa el recorrido de las 8 posiciones adyacentes. Ambos viven en el paquete raíz porque son conceptos de dominio genéricos (una coordenada, un recorrido de vecindad) que no dependen de ninguna parte concreta del ejercicio. [`Grid`](../src/main/java/software/aoc/day04/a/Grid.java) vive en `day04.a` porque es la cuadrícula del diagrama donde se resuelven las reglas específicas de esta parte (qué cuenta como "accesible").
-
-## Diseño y patrones aplicados
-
+## Patrones de diseño
 ### Iterator — `Neighbors`
 Antes de esta clase, calcular los vecinos de una posición implicaría anidar dos bucles (`for dr` / `for dc`) cada vez que hiciera falta, mezclando "cómo se calculan los desplazamientos" con "qué se hace con cada vecino". En su lugar, `Neighbors` encapsula ese recorrido:
 ```java
@@ -30,7 +30,7 @@ La implementación sigue el patrón GoF clásico: `Neighbors` implementa `Iterab
 - **Constantes con nombre**: `PAPER_ROLL` y `MAX_NEIGHBORS_FOR_ACCESS` en vez de literales `'@'` y `4` sueltos en medio de la lógica — el nombre explica por qué existe ese valor, no solo cuál es.
 - **Un único punto de verdad para los límites de la cuadrícula**: `contains(...)` centraliza la comprobación de rango; tanto `isPaperRoll(...)` como el resto del código dependen de ese único método en vez de repetir la condición de bordes en varios sitios.
 - **Nombres que revelan intención**: `accessiblePaperRollsCount`, `paperNeighborsCount`, `isPaperRoll`, `isAccessible` — cada método se entiende por su firma, sin necesidad de comentarios.
-- **Construcción controlada**: los constructores de `Neighbors` y de su clase interna `EightDirectionsIterator` son `private`; la única forma de obtener un `Neighbors` desde fuera es `Neighbors.of(...)`, igual que `Grid.from(...)` es el único punto de entrada para construir una `Grid`.
+- **Construcción semi-controlada**: el constructor de `Neighbors` es `private`, así que `Neighbors.of(...)` es su único punto de entrada real. Su clase interna `EightDirectionsIterator` es inaccesible desde fuera por ser `private` — aunque, hay que decirlo con precisión, su constructor está declarado `public`; lo que la oculta no es la visibilidad del constructor, sino que la propia clase es privada. `Grid`, en cambio, no logra el mismo cierre: aunque expone `Grid.from(...)` como fábrica recomendada, su constructor compacto también está declarado `public` (`public Grid { ... }`), así que `new Grid(List.of(...))` sigue siendo perfectamente válido desde fuera — `from(...)` es la vía sugerida, no la única posible.
 
 ## Tests
 [`GridTest`](../src/test/java/software/aoc/day04/a/GridTest.java) cubre:

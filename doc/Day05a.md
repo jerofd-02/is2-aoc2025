@@ -1,17 +1,18 @@
 # Día 5a - Cafeteria
+
+## Descripción
 Solución al ejercicio "Cafeteria": dada una base de datos con rangos de IDs de ingredientes frescos y una lista de IDs disponibles, contar cuántos de esos IDs disponibles caen dentro de al menos uno de los rangos.
 
-## Modelo conceptual en UML
-<div style="text-align: center;">
+[`FreshnessRule`](../src/main/java/software/aoc/day05/FreshnessRule.java) vive en el paquete raíz `software.aoc.day05` porque es un contrato genérico que no depende de ninguna parte concreta del ejercicio — cualquier cosa que sepa responder "¿es fresco este ID?" puede implementarlo.
+
+## Modelado conceptual en UML
+<div align="center">
   <img src="../images/Day05a.png"/>
 </div>
 
-## Estructura
-[`FreshnessRule`](../src/main/java/software/aoc/day05/FreshnessRule.java) vive en el paquete raíz porque es un contrato genérico que no depende de ninguna parte concreta del ejercicio — cualquier cosa que sepa responder "¿es fresco este ID?" puede implementarlo.
-
-## Diseño y patrones aplicados
+## Patrones de diseño
 ### Composite — `Range` y `FreshRanges`
-Podríamos decir que el enunciado plantea, una jerarquía de "todo/parte": un [`Range`](../src/main/java/software/aoc/day05/a/Range.java) individual y un grupo de `Range` (que pueden solaparse) necesitan responder exactamente a la misma pregunta — "¿este ID es fresco?" — y la respuesta del grupo es simplemente "sí, si lo es para *alguno* de sus miembros".
+Podríamos decir que el enunciado plantea una jerarquía de "todo/parte": un [`Range`](../src/main/java/software/aoc/day05/a/Range.java) individual y un grupo de `Range` (que pueden solaparse) necesitan responder exactamente a la misma pregunta — "¿este ID es fresco?" — y la respuesta del grupo es simplemente "sí, si lo es para *alguno* de sus miembros".
 ```java
 public interface FreshnessRule {
     boolean isFresh(long id);

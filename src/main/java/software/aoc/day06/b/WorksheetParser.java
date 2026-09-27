@@ -7,8 +7,8 @@ import software.aoc.day06.Operator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WorksheetParser {
-    public WorksheetParser() {
+public final class WorksheetParser {
+    private WorksheetParser() {
     }
 
     public static List<Equation> parse(String input) {

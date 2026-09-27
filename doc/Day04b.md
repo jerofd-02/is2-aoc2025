@@ -1,8 +1,10 @@
 # Día 4b - Printing Department
+
+## Descripción
 Segunda parte del ejercicio "Printing Department": ya no basta con contar los rollos accesibles una vez — hay que **retirarlos** y repetir el proceso, porque al quitar unos, otros que antes tenían demasiados vecinos pueden quedar accesibles. Se repite hasta que ninguno más pueda retirarse, y se cuenta el total acumulado.
 
 ## Modelo conceptual en UML
-<div style="text-align: center;">
+<div align="center">
   <img src="../images/Day04b.png"/>
 </div>
 
@@ -25,25 +27,25 @@ while (!accessible.isEmpty()) {
 ```
 
 ## Patrones y técnicas nuevas en esta parte
-### Singleton — `Forklifts`
-`Forklifts` no tiene estado propio (no guarda ningún rollo, ninguna cuadrícula entre llamadas) — es un servicio del dominio, no un dato. En vez de exponerlo como una colección de métodos estáticos sueltos, se modela como una única instancia accesible globalmente vía `getInstance()`, dejando claro que solo existe (y solo tiene sentido que exista) una carretilla-servicio en todo el sistema.
+### Clase de servicio sin estado — `Forklifts`
+`Forklifts` no guarda ningún rollo ni ninguna cuadrícula entre llamadas — es un servicio del dominio, no un dato. Es una clase normal, sin patrón de construcción especial: se instancia directamente donde hace falta (`new Forklifts()`) y expone un único método de negocio, `totalRemovableRolls(Grid grid)`. Al no tener estado propio, no importa cuántas instancias existan ni cuánto vivan — cada llamada es independiente y el resultado depende solo del `Grid` que se le pasa como argumento.
 
 ### SRP: separar "una pasada" de "repetir hasta estabilizar"
-`Grid` sigue respondiendo únicamente "¿qué es accesible en este instante?" — no sabe nada de bucles ni de cuándo parar. `Forklifts` es quien decide *cuándo  detenerse* (cuando `accessible` queda vacío) y *cuánto acumular*. Son dos preguntas distintas — "estado de una cuadrícula" contra "proceso que actúa sobre cuadrículas sucesivas" — y por eso viven en clases distintas en vez de meter el `while` dentro de `Grid`.
+`Grid` sigue respondiendo únicamente "¿qué es accesible en este instante?" — no sabe nada de bucles ni de cuándo parar. `Forklifts` es quien decide *cuándo detenerse* (cuando `accessible` queda vacío) y *cuánto acumular*. Son dos preguntas distintas — "estado de una cuadrícula" contra "proceso que actúa sobre cuadrículas sucesivas" — y por eso viven en clases distintas en vez de meter el `while` dentro de `Grid`.
 
 ### Inmutabilidad persistente, ahora con una secuencia de estados
 `withRollsRemoved(...)` no muta la `Grid` sobre la que se llama — devuelve una `Grid` nueva. `Forklifts` encadena esas instancias (`current = current.withRollsRemoved(...)`) sin que ninguna cuadrícula anterior de la secuencia cambie jamás una vez creada; cada ronda es una fotografía distinta e inmutable del proceso.
 
-### Reutilización real
+### Reutilización real — `Position` y `Neighbors`
 [`Position`](../src/main/java/software/aoc/day04/Position.java) y [`Neighbors`](../src/main/java/software/aoc/day04/Neighbors.java) no se tocan ni se duplican para esta parte — `Forklifts` y el nuevo `Grid` los importan directamente del paquete compartido `software.aoc.day04`. El algoritmo de "ocho direcciones" (Iterator) sigue siendo exactamente el mismo que en la parte A, sin ninguna adaptación.
 
-### Construcción controlada y sin duplicación
-El constructor de `Forklifts` es `private`; `getInstance()` es el único punto de entrada posible, cerrando la garantía de "una única instancia" que promete el Singleton. Además, `Grid` ya no está duplicada entre `day04.a` y `day04.b`: se unificó en el paquete raíz compartido `software.aoc.day04`, igual que ya estaban `Position` y `Neighbors`. Cualquier cambio futuro en la lógica común (por ejemplo, en `isAccessible`) se hace en un único sitio, y ambas partes lo heredan automáticamente.
+### Duplicación pendiente — `Grid`
+A diferencia de `Position` y `Neighbors`, [`Grid`](../src/main/java/software/aoc/day04/b/Grid.java) **sí está duplicada** entre `day04.a` y `day04.b`: `contains(...)`, `charAt(...)`, `isPaperRoll(...)`, `isAccessible(...)` y `paperNeighborsCount(...)` son idénticos en ambas copias. La versión de esta parte solo añade `accessiblePositions()` y `withRollsRemoved(...)` encima de esa base repetida. Es la misma situación que tuvieron `GiftShop` (día 2) o `Escalator` (día 3) antes de resolverse: al no haber ninguna diferencia de comportamiento entre partes en la lógica compartida, cualquier cambio futuro en `isAccessible` habría que aplicarlo dos veces.
 
 ## Tests
 Se añade [`ForkliftsTest`](../src/test/java/software/aoc/day04/b/ForkliftsTest.java) (en `day04.b`), con la misma estructura que los tests anteriores:
 
 1. El ejemplo completo del enunciado, comprobando el total acumulado tras repetir el proceso hasta estabilizarse (`keeps_removing_accessible_rolls_until_none_are_left`, `43`).
-2. El input real del ejercicio, leído como recurso (`removed`, `8739L`). 
+2. El input real del ejercicio, leído como recurso (`removed`, `8739L`).
 
-[`GridTest`](../src/test/java/software/aoc/day04/b/GridTest.java) (en `day04.a`) no cambia de contenido respecto a la parte A — sigue verificando exactamente los mismos casos (accesibilidad puntual, el ejemplo completo y el input real), simplemente ahora importa `Grid` desde el paquete raíz compartido en vez de tener su propia copia.
+[`GridTest`](../src/test/java/software/aoc/day04/b/GridTest.java) (en `day04.b`) no cambia de contenido respecto a la parte A — sigue verificando exactamente los mismos casos (accesibilidad puntual, el ejemplo completo y el input real), simplemente sobre su propia copia de `Grid`, todavía no unificada con la de la parte A.

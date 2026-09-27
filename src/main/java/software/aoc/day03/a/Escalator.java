@@ -1,6 +1,7 @@
 package software.aoc.day03.a;
 
 import software.aoc.day03.Bank;
+import software.aoc.day03.JoltageCalculator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,9 +10,9 @@ import java.util.stream.Stream;
 
 public class Escalator {
     private final List<Bank> banks;
-    private final PairwiseMaxJoltageCalculator joltage;
+    private final JoltageCalculator joltage;
 
-    private Escalator(List<Bank> banks, PairwiseMaxJoltageCalculator joltage) {
+    private Escalator(List<Bank> banks, JoltageCalculator joltage) {
         this.banks = List.copyOf(banks);
         this.joltage = joltage;
     }
@@ -20,7 +21,7 @@ public class Escalator {
         return new Escalator(List.of(), new PairwiseMaxJoltageCalculator());
     }
 
-    public static Escalator create(PairwiseMaxJoltageCalculator joltage) {
+    public static Escalator create(JoltageCalculator joltage) {
         return new Escalator(List.of(), joltage);
     }
 

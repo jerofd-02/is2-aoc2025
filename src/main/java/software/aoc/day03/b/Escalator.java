@@ -1,6 +1,7 @@
 package software.aoc.day03.b;
 
 import software.aoc.day03.Bank;
+import software.aoc.day03.JoltageCalculator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,9 +11,9 @@ import java.util.stream.Stream;
 public class Escalator {
     public static final int DIGITS_TO_SELECT = 12;
     private final List<Bank> banks;
-    private final DigitSelectionJoltageCalculator joltage;
+    private final JoltageCalculator joltage;
 
-    private Escalator(List<Bank> banks, DigitSelectionJoltageCalculator joltage) {
+    private Escalator(List<Bank> banks, JoltageCalculator joltage) {
         this.banks = List.copyOf(banks);
         this.joltage = joltage;
     }
@@ -21,7 +22,7 @@ public class Escalator {
         return new Escalator(List.of(), DigitSelectionJoltageCalculator.selecting(DIGITS_TO_SELECT));
     }
 
-    public static Escalator create(DigitSelectionJoltageCalculator joltage) {
+    public static Escalator create(JoltageCalculator joltage) {
         return new Escalator(List.of(), joltage);
     }
 
