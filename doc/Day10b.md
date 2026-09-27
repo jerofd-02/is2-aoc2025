@@ -1,12 +1,12 @@
 # Día 10b - Factory
 Cada botón, al pulsarse, incrementa en uno un subconjunto fijo de contadores (no luces). Hay que alcanzar exactamente el valor objetivo de **todos** los contadores a la vez, minimizando el número total de pulsaciones. A diferencia de un panel binario, aquí cada contador puede necesitar cualquier valor entero no negativo, y varios botones pueden pulsarse más de una vez.
 
-## Modelo conceptual en UML
+## Modelado conceptual en UML
 <div align="center">
   <img src="../images/Day10b.png"/>
 </div>
 
-## Diseño y patrones aplicados
+## Patrones de diseño
 ### El problema es álgebra lineal, no un grafo — `JoltageSolver`
 Cada botón aporta un vector de incrementos (1 en los contadores que afecta, 0 en el resto), y el objetivo es un vector de valores exactos. Encontrar cuántas veces pulsar cada botón para llegar exactamente al objetivo es, literalmente, resolver un sistema de ecuaciones lineales: `A·x = b`, donde `A` son los botones, `x` las pulsaciones de cada uno (las incógnitas) y `b` el objetivo. Eso descarta por completo un recorrido por estados: el espacio de posibles conteos de pulsaciones no está acotado a priori, así que no hay un grafo finito razonable que explorar.
 

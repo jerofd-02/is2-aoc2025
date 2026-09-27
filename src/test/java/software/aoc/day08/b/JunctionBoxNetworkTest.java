@@ -32,7 +32,7 @@ public class JunctionBoxNetworkTest {
             """;
 
     @Test
-    public void product_of_the_three_largest_circuits_after_ten_connections() {
+    public void x_product_of_the_last_connection_that_fully_connects_the_network() {
         JunctionBoxNetwork network = JunctionBoxNetwork.from(input);
 
         assertThat(network.lastConnectionToFullyConnect().xProduct()).isEqualTo(25272);

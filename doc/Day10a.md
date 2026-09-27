@@ -1,12 +1,12 @@
 # Día 10a - Factory
 Cada máquina tiene un panel de luces, todas apagadas al inicio, y varios botones; cada botón alterna (toggle) un subconjunto fijo de luces. Hay que encontrar el **mínimo número total de pulsaciones** de botones necesario para que el panel llegue exactamente al diagrama objetivo. El joltage que aparece en cada línea es irrelevante para esta parte y se ignora explícitamente, tal como indica el enunciado.
 
-## Modelo conceptual en UML
+## Modelado conceptual en UML
 <div align="center">
   <img src="../images/Day10a.png"/>
 </div>
 
-## Diseño y patrones aplicados
+## Patrones de diseño
 ### El problema ya es un grafo — `ButtonPressSearch`
 Antes de pensar en qué algoritmo usar, conviene mirar qué es realmente "mínimo número de pulsaciones para llegar al objetivo": cada configuración posible de luces es un estado, y cada botón es una transición de un estado a otro. Eso es, literalmente, un grafo no ponderado, y "camino más corto" en un grafo no ponderado es BFS — no hace falta forzar la analogía ni evaluar alternativas más pesadas (Dijkstra, búsqueda con pesos) porque aquí no hay pesos que justificarlas: cada pulsación cuesta lo mismo.
 

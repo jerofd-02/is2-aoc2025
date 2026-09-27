@@ -26,7 +26,7 @@ public class ReactorNetworkTest {
             """;
 
     @Test
-    public void count_all_paths_from_you_to_out() {
+    public void counts_paths_through_required_devices() {
         ReactorNetwork network = ReactorNetwork.from(input);
 
         assertThat(network.countPathsThroughRequiredDevices("svr", "out", Set.of("dac", "fft"))).isEqualTo(2);

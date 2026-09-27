@@ -6,7 +6,7 @@ public record JunctionBox(long x, long y, long z) {
         return new JunctionBox(Long.parseLong(parts[0]), Long.parseLong(parts[1]), Long.parseLong(parts[2]));
     }
 
-    public double distanceSquaredTo(JunctionBox other) {
+    public double distanceTo(JunctionBox other) {
         return Math.sqrt(Math.pow(x - other.x, 2) + Math.pow(y - other.y, 2) + Math.pow(z - other.z, 2));
     }
 }

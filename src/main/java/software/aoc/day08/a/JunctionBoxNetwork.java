@@ -28,7 +28,7 @@ public record JunctionBoxNetwork(List<JunctionBox> boxes) {
         List<PairDistance> pairs = new ArrayList<>();
         for (int i = 0; i < boxes.size(); i++) {
             for (int j = i + 1; j < boxes.size(); j++) {
-                pairs.add(new PairDistance(i, j, (long) boxes.get(i).distanceSquaredTo(boxes.get(j))));
+                pairs.add(new PairDistance(i, j, (long) boxes.get(i).distanceTo(boxes.get(j))));
             }
         }
         return pairs.stream().sorted().collect(Collectors.toList());
