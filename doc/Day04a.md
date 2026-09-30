@@ -3,7 +3,7 @@
 ## Descripción
 Solución al ejercicio "Printing Department": dado un diagrama en forma de cuadrícula con rollos de papel (`@`), contar cuántos son accesibles para una carretilla — un rollo es accesible si tiene **menos de cuatro** rollos de papel entre sus ocho posiciones adyacentes.
 
-[`Position`](../src/main/java/software/aoc/day04/Position.java) representa una coordenada inmutable (fila, columna) y [`Neighbors`](../src/main/java/software/aoc/day04/Neighbors.java) representa el recorrido de las 8 posiciones adyacentes. Ambos viven en el paquete raíz `software.aoc.day04` porque son conceptos de dominio genéricos (una coordenada, un recorrido de vecindad) que no dependen de ninguna parte concreta del ejercicio. [`Grid`](../src/main/java/software/aoc/day04/a/Grid.java), en cambio, vive en `day04.a` — aunque, como se explica en la doc de la parte B, la mayor parte de su lógica no es en realidad específica de esta parte, sino idéntica a la copia que existe en `day04.b`.
+[`Position`](../src/main/java/software/aoc/day04/Position.java) representa una coordenada inmutable (fila, columna) y [`Neighbors`](../src/main/java/software/aoc/day04/Neighbors.java) representa el recorrido de las 8 posiciones adyacentes. Ambos viven en el paquete raíz `software.aoc.day04` porque son conceptos de dominio genéricos (una coordenada, un recorrido de vecindad) que no dependen de ninguna parte concreta del ejercicio. [`Grid`](../src/main/java/software/aoc/day04/a/Grid.java), en cambio, vive en `day04.a`.
 
 ## Modelado conceptual en UML
 <div align="center">

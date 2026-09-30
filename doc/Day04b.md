@@ -39,9 +39,6 @@ while (!accessible.isEmpty()) {
 ### Reutilización real — `Position` y `Neighbors`
 [`Position`](../src/main/java/software/aoc/day04/Position.java) y [`Neighbors`](../src/main/java/software/aoc/day04/Neighbors.java) no se tocan ni se duplican para esta parte — `Forklifts` y el nuevo `Grid` los importan directamente del paquete compartido `software.aoc.day04`. El algoritmo de "ocho direcciones" (Iterator) sigue siendo exactamente el mismo que en la parte A, sin ninguna adaptación.
 
-### Duplicación pendiente — `Grid`
-A diferencia de `Position` y `Neighbors`, [`Grid`](../src/main/java/software/aoc/day04/b/Grid.java) **sí está duplicada** entre `day04.a` y `day04.b`: `contains(...)`, `charAt(...)`, `isPaperRoll(...)`, `isAccessible(...)` y `paperNeighborsCount(...)` son idénticos en ambas copias. La versión de esta parte solo añade `accessiblePositions()` y `withRollsRemoved(...)` encima de esa base repetida. Es la misma situación que tuvieron `GiftShop` (día 2) o `Escalator` (día 3) antes de resolverse: al no haber ninguna diferencia de comportamiento entre partes en la lógica compartida, cualquier cambio futuro en `isAccessible` habría que aplicarlo dos veces.
-
 ## Tests
 Se añade [`ForkliftsTest`](../src/test/java/software/aoc/day04/b/ForkliftsTest.java) (en `day04.b`), con la misma estructura que los tests anteriores:
 
